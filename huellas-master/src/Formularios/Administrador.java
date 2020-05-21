@@ -561,7 +561,7 @@ public class Administrador extends javax.swing.JFrame
                 Connection c=con.conectar();
                 idEmpleado = Integer.parseInt(strEmpleado);
 //                idInstancia = Integer.parseInt(strInstancia);
-                PreparedStatement verificarStmt = c.prepareStatement("SELECT id FROM empleados WHERE id_empleado=?");
+                PreparedStatement verificarStmt = c.prepareStatement("SELECT id FROM empleados WHERE id_empleado AND instancia_id=?,?");
                 verificarStmt.setInt(1, idEmpleado);
                 ResultSet rs = verificarStmt.executeQuery();
 
@@ -653,14 +653,14 @@ public class Administrador extends javax.swing.JFrame
             //Establece los valores para la sentencia SQL
             Connection c=con.conectar();
             //Obtiene la plantilla correspondiente a la persona indicada
-            PreparedStatement verificarStmt = c.prepareStatement("SELECT huehuella FROM somhue WHERE huenombre=?");
+            PreparedStatement verificarStmt = c.prepareStatement("SELECT hwhuella FROM somhw WHERE hwnombre=?");
             verificarStmt.setString(1,nom);
             ResultSet rs = verificarStmt.executeQuery();
 
             //Si se encuentra el nombre en la base de datos
             if (rs.next()){
                 //Lee la plantilla de la base de datos
-                byte templateBuffer[] = rs.getBytes("huehuella");
+                byte templateBuffer[] = rs.getBytes("hwhuella");
                 //Crea una nueva plantilla a partir de la guardada en la base de datos
                 DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate(templateBuffer);
                 //Envia la plantilla creada al objeto contendor de Template del componente de huella digital
@@ -703,7 +703,7 @@ public class Administrador extends javax.swing.JFrame
             Connection c=con.conectar();
 
             //Obtiene todas las huellas de la bd
-            PreparedStatement identificarStmt = c.prepareStatement("SELECT id_empleado,huella, instancia_id FROM empleados");
+            PreparedStatement identificarStmt = c.prepareStatement("SELECT id_empleado, huella, instancia_id FROM empleados");
             ResultSet rs = identificarStmt.executeQuery();
 
             while(rs.next()){

@@ -15,13 +15,13 @@ public class BD
     
 //    public  String puerto="3306";
 //    public  String nomservidor="localhost";
-//    public  String db="demohuellas";
+//    public  String db="huellas_warriors";
 //    public  String user="root";
-//    public  String pass="root";
+//    public  String pass="";
     
     public  String puerto="3320";
     public  String nomservidor="189.204.31.157";
-    public  String db="huellas";
+    public  String db="huellas_warriors";
     public  String user="root";
     public  String pass="software";
     

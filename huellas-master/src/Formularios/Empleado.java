@@ -43,11 +43,23 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import java.security.cert.X509Certificate;
 
 /**
  *
@@ -58,6 +70,35 @@ public class Empleado extends javax.swing.JFrame
 
     public Empleado()
     {
+        TrustManager[] trustAllCerts = new TrustManager[]{
+        new X509TrustManager() {
+
+            public java.security.cert.X509Certificate[] getAcceptedIssuers()
+            {
+                return null;
+            }
+            public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType)
+            {
+                //No need to implement.
+            }
+            public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType)
+            {
+                //No need to implement.
+            }
+        }
+};
+
+// Install the all-trusting trust manager
+try 
+{
+    SSLContext sc = SSLContext.getInstance("SSL");
+    sc.init(null, trustAllCerts, new java.security.SecureRandom());
+    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+} 
+catch (Exception e) 
+{
+    System.out.println(e);
+}
         initComponents();
         acciones = new Acciones();
         this.imgValidate = new ImageIcon(imgCheck.getImage().getScaledInstance(lblValidacion.getWidth(), lblValidacion.getHeight(), Image.SCALE_DEFAULT));
@@ -92,8 +133,8 @@ public class Empleado extends javax.swing.JFrame
     public AudioClip beepValidate = Applet.newAudioClip(getClass().getResource("/Sonidos/validate.wav"));
     public AudioClip beepError = Applet.newAudioClip(getClass().getResource("/Sonidos/error.wav"));
     //inicializar imágenes
-    public ImageIcon imgCheck = new ImageIcon(getClass().getResource("/Imagenes/correcto.gif"));
-    public ImageIcon imgTache = new ImageIcon(getClass().getResource("/Imagenes/incorrecto.gif"));
+    public ImageIcon imgCheck = new ImageIcon(getClass().getResource("/Imagenes/correcto.png"));
+    public ImageIcon imgTache = new ImageIcon(getClass().getResource("/Imagenes/incorrecto.png"));
     public Icon imgValidate;
     public Icon imgError;
 
